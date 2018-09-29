@@ -1,0 +1,17 @@
+diff --git third_party/curl.BUILD third_party/curl.BUILD
+index 1638b72..d322068 100644
+--- third_party/curl.BUILD
++++ third_party/curl.BUILD
+@@ -271,6 +271,12 @@ cc_library(
+             "-DHAVE_LIBZ",
+             "-DHAVE_ZLIB_H",
+             "-Wno-string-plus-int",
++            # Suspect Nix of providing mac OS SDK(?) headers for 10.12, but build may deduce
++            # that user is on 10.13, then try to build code sections involving newly (in 10.13) supported TLS 1.3 (guessing
++            # based on errors seen that enums in updated headers expanded). The code sections
++            # are guarded by preprocessor macros, so just lie to make them go away
++            "-DMAC_OS_X_VERSION_MAX_ALLOWED=1090",
++            "-DMAC_OS_X_VERSION_MIN_REQUIRED=1090",
+         ],
+     }) + select({
+         "@org_tensorflow//tensorflow:darwin": [

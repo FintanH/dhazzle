@@ -1,0 +1,46 @@
+load(
+    "@io_tweag_rules_haskell//haskell:haskell.bzl",
+    "haskell_library",
+)
+load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
+load("@ai_formation_hazel//:third_party/cabal2bazel/bzl/cabal_paths.bzl", "cabal_paths")
+
+cc_library(
+    name = "cbits",
+    hdrs = glob([
+        "src/**/*.h",
+    ]),
+    strip_include_prefix = "src/cbits",
+)
+
+haskell_library(
+    name = "cborg",
+    srcs = glob([
+        "src/**/*.hs",
+        "src/**/*.hs-boot",
+    ]),
+    src_strip_prefix = "src",
+    compiler_flags = ["-DOPTIMIZE_GMP"],
+    deps = [
+        ":paths",
+        ":cbits",
+        hazel_library("array"),
+        hazel_library("base"),
+        hazel_library("bytestring"),
+        hazel_library("containers"),
+        hazel_library("fail"),
+        hazel_library("ghc-prim"),
+        hazel_library("half"),
+        hazel_library("integer-gmp"),
+        hazel_library("primitive"),
+        hazel_library("semigroups"),
+        hazel_library("text"),
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cabal_paths(
+    name = "paths",
+    package = "cborg",
+    version = [0, 2, 0, 0],
+)
