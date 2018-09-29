@@ -7,18 +7,18 @@ load("@ai_formation_hazel//:hazel.bzl", "hazel_library")
 load("@ai_formation_hazel//:third_party/cabal2bazel/bzl/cabal_paths.bzl", "cabal_paths")
 
 haskell_binary(
-    name = "dhall-exec",
+    name = "dhall",
     srcs = ["dhall/Main.hs"],
     src_strip_prefix = "dhall",
     deps = [
-        ":dhall",
+        ":dhall-lib",
         hazel_library("base"),
     ],
     compiler_flags = ["-w"],
 )
 
 haskell_library(
-    name = "dhall",
+    name = "dhall-lib",
     srcs = glob([
         "src/**/*.hs",
         "src/**/*.hs-boot",
