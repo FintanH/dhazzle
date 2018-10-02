@@ -98,6 +98,19 @@ patched_solib(name="patched_cpp", lib_name="stdc++")
     repository = "@nixpkgs",
 )
 
+nixpkgs_package(
+    name = "glib_locales",
+    attribute_path = "glibcLocales",
+    build_file_content = """
+package(default_visibility = ["//visibility:public"])
+filegroup(
+  name = "locale-archive",
+  srcs = ["lib/locale/locale-archive"],
+)
+""",
+    repository = "@nixpkgs",
+)
+
 register_toolchains(
     "@ghc//:ghc",
 )
